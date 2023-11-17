@@ -3,6 +3,7 @@ from turtle import *
 from random import *
 import turtle
 import time
+import Class 
 
 # TEXT Designs
 CURSOR_SIZE = 20
@@ -15,8 +16,10 @@ FONT = ('Arial', FONT_SIZE, 'bold')
 def Screen_Setup():
     setup(900,500)
     title("Keyboard Warriors: Adventure in SPACE(bar)")
+    
     Home_Screen()
     speed(0)
+    
 
 
 # FUNCTIONS FOR BACKGROUND DESIGNS HERE ===============
@@ -32,7 +35,7 @@ def Home_Screen():
     #Create_Button()
 
     # This should be the last line! Write your codes above this line!!!
-    turtle.mainloop() # This will run the above results
+    #turtle.mainloop() # This will run the above results
 
 def Create_Button():
     pen = turtle.Turtle()
@@ -73,4 +76,46 @@ def Gameover_Screen():
 
 #  Design for Game Screen ===============================================
 def Gameplay_Screen():
-    pass
+    tracer(0)
+
+    sprites=[]
+    player=Class.Player()
+    ship=Class.Ship()
+    #sprites.append(player)
+    #sprites.append(ship)
+    for _ in range(5):
+            asteroid = Class.Asteroid()
+            x = randint(-450, 450)
+            y = 250
+            asteroid.goto(x, y)
+            dx = 0
+            #randint(-5, 5) / 20.0
+            dy = randint(-2, -1) / 30.0 
+            
+            asteroid.dx = dx
+            asteroid.dy = dy
+            size = 2.0
+            asteroid.size = size
+            sprites.append(asteroid)
+    
+    sp_pen=turtle.Turtle()
+
+    while True:
+    # Update the screen
+        update()  
+
+        
+        
+        sp_pen.clear()
+        sp_pen.hideturtle()
+        sp_pen.penup()
+
+        
+
+        # Render and update
+        for sprite in sprites:
+            sprite.update()
+            sprite.render(sp_pen)
+
+        # delay=input("blah blah bitch")
+        # pass
