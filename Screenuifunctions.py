@@ -15,7 +15,7 @@ FONT = ('Arial', FONT_SIZE, 'bold')
 
 # SCREEN SETUPScreenuifunctions
 def Screen_Setup():
-    setup(900,500)
+    #setup(900,500)
     title("Keyboard Warriors: Adventure in SPACE(bar)")
     speed(0)
     
@@ -36,7 +36,7 @@ def Home_Screen():
 def Play_Button(ChangeTo_GamePlay,ChangeTo_Scoreboard,ChangeTo_Quit):
     canvas = turtle.getcanvas()
     parent = canvas.master
-    parent.geometry('500x500')
+    #parent.geometry('500x500')
 
     button1 = tk.Button(parent, text="Let's Play", fg='light grey', bg='navy', command=ChangeTo_GamePlay)
     id1 = canvas.create_window((0,0), window=button1)

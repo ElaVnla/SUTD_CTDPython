@@ -4,13 +4,14 @@ from random import *
 import turtle
 import time
 import Screenuifunctions as Screenuifunctions # Import functions from the other .py file to be used them in this file
-
+screen = turtle.Screen()
+screen.setup(width=1.0, height=1.0)
 # Run screen setup
 Screenuifunctions.Screen_Setup()
 
 # First screen to pop up
 Homescreen = Screenuifunctions.Home_Screen()
-
+#
 # Set up home screen buttons
 def ChangeTo_GamePlay():
     Homescreen.clear()
