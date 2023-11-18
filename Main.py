@@ -8,6 +8,7 @@ import Screenuifunctions as Screenuifunctions # Import functions from the other 
 # Set up Screen ===================================================================================================
 screen = turtle.Screen()
 screen.setup(width=1.0, height=1.0)
+
 # Run screen setup
 Screenuifunctions.Screen_Setup()
 
@@ -23,6 +24,7 @@ def ChangeTo_GamePlay():
     Homescreen.clear()
     print("play button")
     Screenuifunctions.Gameplay_Screen()
+    
 
 # If player clicks scoreboard, will navigate to this function
 def ChangeTo_Scoreboard():
