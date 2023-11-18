@@ -20,58 +20,124 @@ userInput=""
 
 def justATestLMAO():
     print(userInput)
-# SCREEN LAYOUT ======================================
 
-# SCREEN SETUPScreenuifunctions
+# SCREEN LAYOUT ================================================================================================================
+
+# SCREEN SETUP Screenuifunctions
+# First thing to be called when main.py is run. This function will help setup the overall application
 def Screen_Setup():
     screen.setup(WIDTH + 4, HEIGHT + 8)  # fudge factors due to window borders & title bar
     # screen.setworldcoordinates(0, 0, WIDTH, HEIGHT)
+    #setup(900,500)
+    # Title of the application. This will be displayed at the top left of the interface
     title("Keyboard Warriors: Adventure in SPACE(bar)")
     speed(0)
-    
 
+# Design for Home Screen ========================================================================================================
 
-# FUNCTIONS FOR BACKGROUND DESIGNS HERE ===============
-
-# Design for Home Screen ====================================
 def Home_Screen():
+    # Import the background image, to be displayed
     image = "Images/homescreenbackground.gif"
     
     #screen.addshape(image)
     screen.bgpic(image)
     screen.register_shape(image)
     turtle.shape(image)
+
+    # Return the screen. Easier to clear when navigating to different pages
     return screen
 
+# Function that creates the buttons in the homescreen
 def Play_Button(ChangeTo_GamePlay,ChangeTo_Scoreboard,ChangeTo_Quit):
     canvas = turtle.getcanvas()
     parent = canvas.master
     #parent.geometry('500x500')
 
-    button1 = tk.Button(parent, text="Let's Play", fg='light grey', bg='navy', command=ChangeTo_GamePlay)
-    id1 = canvas.create_window((0,0), window=button1)
+    # Creation of buttons and linking it to their respective functions (command=(function name) )
+    GamePlayButton = tk.Button(parent, text="Let's Play", fg='black', bg='light gray', command=ChangeTo_GamePlay)
+    id1 = canvas.create_window((0,40), window=GamePlayButton)
+    canvas.itemconfig(id1, width=200, height=40)
+    GamePlayButton.update()
 
-    button2 = tk.Button(parent, text='Scoreboard', fg='light grey', bg='navy', command=ChangeTo_Scoreboard)
-    id2 = canvas.create_window((100,0), window=button2)
+    ScoreboardButton = tk.Button(parent, text='Scoreboard', fg='black', bg='light gray', command=ChangeTo_Scoreboard)
+    id2 = canvas.create_window((0,100), window=ScoreboardButton)
+    canvas.itemconfig(id2, width=200, height=40)
+    ScoreboardButton.update()
 
-    button3 = tk.Button(parent, text='Leave', fg='light grey', bg='navy', command=ChangeTo_Quit)
-    id3 = canvas.create_window((200,0), window=button3)
+    QuitButton = tk.Button(parent, text='Leave', fg='black', bg='light gray', command=ChangeTo_Quit)
+    id3 = canvas.create_window((0,160), window=QuitButton)
+    canvas.itemconfig(id3, width=200, height=40)
+    QuitButton.update()
 
-# Design for Scoreboard Screen ===========================================
+# Design for Scoreboard Screen ======================================================================================================
 def Scoreboard_Screen():
+    # Import background image to be displayed
     image = "Images/scoreboard.gif"
     #screen = turtle.Screen()
     #screen.addshape(image)
     screen.bgpic(image)
     screen.register_shape(image)
     turtle.shape(image)
+
+    # Return the screen. Easier to clear when navigating to different pages
     return screen
 
-# Design for Game Over Screen ============================================
-def Gameover_Screen():
-    pass
+# Function that helps display scores from the list given
+def Display_Score(Sorted_Dict):
+    # Variables
+    stopat6 = 0
+    position_yaxis = 60
 
-#  Design for Game Screen ===============================================
+    # Loop through the sorted list
+    for users in Sorted_Dict:
+
+        # Only display the top 6 players. Once 6 players have been displayed, break the loop
+        if stopat6 == 6:
+            break
+        else:
+            # Turtle Set up
+            T = turtle.Pen()
+            T.speed(0)
+            T.hideturtle()
+            T.up()
+            T.color('White')
+
+            # Write player name
+            T.setposition(-150,position_yaxis)
+            T.write(f'{users["PlayerName"]}',align='left', font=("Arial", 16, "bold", "italic"))
+
+            # Write player's score
+            T.setposition(80,position_yaxis)
+            T.write(f'{users["Score"]}', align="left", font=("Arial", 16, "bold"))
+            
+            stopat6 += 1
+            position_yaxis -= 40
+
+
+# Function that creates the buttons in the homescreen
+def Back_Button(GoBack):
+    canvas = turtle.getcanvas()
+    parent = canvas.master
+    #parent.geometry('500x500')
+
+    # Creation of buttons and linking it to their respective functions (command=(function name) )
+    BacktoHomeScreenButton = tk.Button(parent, text="Go back", fg='Black', bg='light grey', command=GoBack)
+    id1 = canvas.create_window((0,190), window=BacktoHomeScreenButton)
+    canvas.itemconfig(id1, width=200, height=40)
+    BacktoHomeScreenButton.update()
+
+
+# Design for Game Over Screen ====================================================================================================
+def Gameover_Screen():
+    # Import the background image, to be displayed
+    image = "Images/gameover.gif"
+    screen = turtle.Screen()
+    #screen.addshape(image)
+    screen.bgpic(image)
+    screen.register_shape(image)
+    turtle.shape(image)
+
+#  Design for Game Screen =======================================================================================================
 def Gameplay_Screen():
     
     image = "Images/gamescreen.gif"
