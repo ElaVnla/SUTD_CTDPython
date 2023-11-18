@@ -8,6 +8,7 @@ import tkinter as tk
 from tkinter import messagebox
 import time
 import Class 
+from tkinter import font
 
 # TEXT Designs
 CURSOR_SIZE = 20
@@ -54,19 +55,21 @@ def Play_Button(ChangeTo_GamePlay,ChangeTo_Scoreboard,ChangeTo_Quit):
     #parent.geometry('500x500')
 
     # Creation of buttons and linking it to their respective functions (command=(function name) )
-    GamePlayButton = tk.Button(parent, text="Let's Play", fg='black', bg='light gray', command=ChangeTo_GamePlay)
-    id1 = canvas.create_window((0,40), window=GamePlayButton)
-    canvas.itemconfig(id1, width=200, height=40)
+    myfont = font.Font(family='Arial', size=11, weight="normal")
+
+    GamePlayButton = tk.Button(parent, text="Let's Play", fg='black', bg='light gray', command=ChangeTo_GamePlay, font=myfont)
+    id1 = canvas.create_window((0,80), window=GamePlayButton)
+    canvas.itemconfig(id1, width=180, height=40)
     GamePlayButton.update()
 
-    ScoreboardButton = tk.Button(parent, text='Scoreboard', fg='black', bg='light gray', command=ChangeTo_Scoreboard)
-    id2 = canvas.create_window((0,100), window=ScoreboardButton)
-    canvas.itemconfig(id2, width=200, height=40)
+    ScoreboardButton = tk.Button(parent, text='Scoreboard', fg='black', bg='light gray', command=ChangeTo_Scoreboard, font=myfont)
+    id2 = canvas.create_window((0,140), window=ScoreboardButton)
+    canvas.itemconfig(id2, width=180, height=40)
     ScoreboardButton.update()
 
-    QuitButton = tk.Button(parent, text='Leave', fg='black', bg='light gray', command=ChangeTo_Quit)
-    id3 = canvas.create_window((0,160), window=QuitButton)
-    canvas.itemconfig(id3, width=200, height=40)
+    QuitButton = tk.Button(parent, text='Leave', fg='black', bg='light gray', command=ChangeTo_Quit, font=myfont)
+    id3 = canvas.create_window((0,200), window=QuitButton)
+    canvas.itemconfig(id3, width=180, height=40)
     QuitButton.update()
 
 # Design for Scoreboard Screen ======================================================================================================
@@ -121,9 +124,10 @@ def Back_Button(GoBack):
     #parent.geometry('500x500')
 
     # Creation of buttons and linking it to their respective functions (command=(function name) )
-    BacktoHomeScreenButton = tk.Button(parent, text="Go back", fg='Black', bg='light grey', command=GoBack)
+    myfont = font.Font(family='Arial', size=11, weight="normal")
+    BacktoHomeScreenButton = tk.Button(parent, text="Go back", fg='Black', bg='light grey', command=GoBack, font=myfont)
     id1 = canvas.create_window((0,190), window=BacktoHomeScreenButton)
-    canvas.itemconfig(id1, width=200, height=40)
+    canvas.itemconfig(id1, width=180, height=40)
     BacktoHomeScreenButton.update()
 
 
