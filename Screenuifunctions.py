@@ -8,6 +8,7 @@ import tkinter as tk
 from tkinter import messagebox
 import time
 import Class 
+import requests
 from tkinter import font
 
 # TEXT Designs
@@ -143,6 +144,19 @@ def Gameover_Screen():
     turtle.shape(image)
 
 #  Design for Game Screen =======================================================================================================
+def GetWords():
+    word_site = "https://www.mit.edu/~ecprice/wordlist.10000"
+
+    response = requests.get(word_site)
+    WORDS = response.content.splitlines()
+    print(WORDS)
+    newlist = []
+    for words in WORDS:
+        if len(words) <= 6 and len(words) >= 4:
+            bruh = words.decode("utf-8")
+            newlist.append(bruh)
+    
+    return newlist
 def Gameplay_Screen():
     
     image = "Images/gamescreen.gif"
@@ -151,92 +165,130 @@ def Gameplay_Screen():
     screen.bgpic(image)
     screen.tracer(0)
 
-    words= ["apple", "badge", "cloud", "drink", 
-            "eleven", "fuzzy", "grape", "happy", "igloo", 
-            "jolly", "kitty", "lemon", "magic", "ninja", 
-            "ocean", "piano", "queen", "robot", "sunny", "tiger"]
+    # words= ["apple", "badge", "cloud", "drink", 
+    #         "eleven", "fuzzy", "grape", "happy", "igloo", 
+    #         "jolly", "kitty", "lemon", "magic", "ninja", 
+    #         "ocean", "piano", "queen", "robot", "sunny", "tiger", ]
+
+    words = GetWords()
     
+    # list of sprites to animate, asteroids will be separate list
     sprites=[]
     asteroids=[]
+
+    # player, ship, and missile instances
     player=Class.Player()
     ship=Class.Ship()
     missile=Class.Missile()
-    difficulty=5
+
+    # experimental difficulty 
+    difficulty = 1
+
+    
+    # add player, ship, and missile into list of sprites to animate
     sprites.append(player)
     sprites.append(ship)
     sprites.append(missile)
 
-    
-    
-            
-    
+    # declare variable just for animation of sprites
     sp_pen=turtle.Turtle()
-    # delay=input(type(turtle.screensize()))
+    
     turtle.penup()
     turtle.goto(WIDTH/2-300,-HEIGHT/2+50)
     turtle.hideturtle()
+
+    score_pen = turtle.Turtle()
+    score_pen.color("white")
+    score_pen.goto(WIDTH/2-300,HEIGHT/2-50)
+    # turtle screen listen for user input on keyboard
+    # this specifically will print out the letters typed by the player live on the screen
     screen.listen()
-    
     screen._onkeypress = partial(_onkeypress, screen)
     screen.onkeypress(letter)
-    # screen.onkeypress(missile.fire, "space")
     
-    # screen.onkeypress(justATestLMAO, "w")
-    
-    
-    
-
+    # main game while loop, enables animation update and render to run continuously
     while True:
     # Update the screen
         update()  
-        # bruh=randint(0,1000)
+
+        # clear all, if any, previous drawings by the turtle pen
         sp_pen.clear()
+        # hide the turtle pen
         sp_pen.hideturtle()
+        # turtle won't draw continuous lines
         sp_pen.penup()
+
+        # if there are less than certain number of asteroids, continue spawning for player to play
         if(len(asteroids)<difficulty):
             spawnSomeMotherFuckers(2,words,asteroids)
         
-        # if
+        
 
-        # Render and update
+        # render and update
         for sprite in sprites:
             sprite.update()
             sprite.render(sp_pen)
-            # if isinstance(sprite, Class.Asteroid):
-                
-
+                           
+        # attach a word from the list of words to appear below the asteroid    
         for sprite in asteroids:
-            sp_pen.goto(sprite.x, sprite.y)
+            
+            sp_pen.goto(sprite.x-10*sprite.size, sprite.y-20*sprite.size-10)
             sp_pen.color("white")
             sp_pen.write(f"{sprite.word}", False, font=("Courier New", 18, "normal"))
             sprite.update()
             sprite.render(sp_pen)
-        # for sprite in sprites:
-        screen.onkeypress(partial(return_user_input, missile, asteroids), "space")
+
+        # get user input via series of functions, when player presses "space", if word exists, asteroid is destroyed
+        screen.onkeypress(partial(return_user_input, missile, asteroids, player), "space")
         # delay=input("blah blah")
         # pass
+        score_pen.clear()
+        score_pen.write(player.score,False, font=FONT)
         
+        # difficulty increases when the points increases
+        for i in range (1,20):
+            if  player.score == i*100:
+                difficulty = i + 1
+                print(difficulty)
 
-
-def spawnSomeMotherFuckers(difficultyTweak,words,sprites):
+# function for spawning asteroids to be put into while loop
+def spawnSomeMotherFuckers(difficultyTweak,words,sprites): # args influence number of asteroids to spawn, what words to use, and the list of asteroid objects
     for _ in range(difficultyTweak):
+            # create asteroid instance
             asteroid = Class.Asteroid()
-            # wordSpr=Class.Words()
+            
+            # choose a random word to be attached to asteroid instance
             word=words[randint(0,len(words)-1)]
-            x = randint(-WIDTH/2, WIDTH/2)
-            y = HEIGHT/2
+
+            # randomly spawn asteroid slightly above the top of the screen
+            x = randint(1,3)*82.5*choice([-1,1])
+            y = HEIGHT/2+randint(1,4)*20
+            
+            # if there are already asteroids in the list
+            # if(len(sprites)!=0):
+            #     for k in sprites:
+            #         # if asteroid spawns within collision of existing asteroid, do not spawn the asteroid
+            #         if (asteroid.x-k.x>):
+            #             break
+            #         # if there is already an asteroid with randomly assigned word, generate a new word
+            #         if (k.word==word):
+            #             word=words[randint(0,len(words)-1)]
+            #         # spawn the asteroid
+            #         else:
+            #             asteroid.goto(x, y)
+            # # spawn the asteroid
+            # else:
             asteroid.goto(x, y)
             
-            dx = 0
-            
-            dy = randint(-10, -1) / 30.0 
 
-            
+            # asteroid movement variable, can be adjusted according to the difficulty level
+            dx = 0
+            dy = randint(-difficultyTweak, -1) / 25.0            
             asteroid.dx = dx
             asteroid.dy = dy
 
             
-            size = 2.0
+            size = randint(2,4)
             asteroid.size = size
             asteroid.word=word
             
@@ -266,7 +318,7 @@ def letter(character):
         # print(USER_INPUT)
 
 
-def return_user_input(missile, asteroids):
+def return_user_input(missile, asteroids, player):
     res=''
     userInput=res.join(USER_INPUT)
     USER_INPUT.clear()
@@ -277,8 +329,9 @@ def return_user_input(missile, asteroids):
     for a in asteroids:
         # print(a.word, asteroids.index(a))
         if (a.word==userInput):
-            missile.fire()
+            missile.fire(a)
             asteroids.remove(asteroids[asteroids.index(a)])
+            player.score += 10
         #    asteroids.remove(asteroids.index(userInput))
         
     # return userInput
