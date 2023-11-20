@@ -7,7 +7,8 @@ import Screenuifunctions as Screenuifunctions # Import functions from the other 
 
 # Set up Screen ===================================================================================================
 screen = turtle.Screen()
-screen.setup(width=1.0, height=1.0)
+screen.setup(width=1.0, 
+             height=1.0)
 
 # Run screen setup
 Screenuifunctions.Screen_Setup()
@@ -34,8 +35,16 @@ def ChangeTo_Scoreboard():
 
     # Pass in the Score list and display the results in order
     # Display the top 6 results
-    Players_Score_Dict = [{'PlayerName': 'Erika', 'Score':20}, {'PlayerName':'Joey','Score': 30}, {'PlayerName':'Ryan','Score': 100}, {'PlayerName':'Erika','Score': 0}, {'PlayerName': 'Angie', 'Score': 50}, {'PlayerName': "Jered", 'Score': 60}, {'PlayerName': "Drea", 'Score': 80}]
-    Sorted_Dict = sorted(Players_Score_Dict, key=lambda d: d['Score'], reverse=True) 
+    Players_Score_Dict = [{'PlayerName': 'Erika', 'Score':20}, 
+                          {'PlayerName':'Joey','Score': 30}, 
+                          {'PlayerName':'Ryan','Score': 100}, 
+                          {'PlayerName':'Erika','Score': 0}, 
+                          {'PlayerName': 'Angie', 'Score': 50}, 
+                          {'PlayerName': "Jered", 'Score': 60}, 
+                          {'PlayerName': "Drea", 'Score': 80}]
+    Sorted_Dict = sorted(Players_Score_Dict, 
+                         key=lambda d: d['Score'], 
+                         reverse=True) 
     # Print results in terminal to check if sorted_dict was sorted right
     print(Sorted_Dict)
 
@@ -50,7 +59,9 @@ def ChangeTo_Scoreboard():
 
         # Must add this code again or the homescreen won't display the buttons
         # Display the 3 buttons
-        Screenuifunctions.Play_Button(ChangeTo_GamePlay,ChangeTo_Scoreboard,ChangeTo_Quit)
+        Screenuifunctions.Play_Button(ChangeTo_GamePlay,
+                                      ChangeTo_Scoreboard,
+                                      ChangeTo_Quit)
 
     # Display the back button
     Screenuifunctions.Back_Button(GoBack)
@@ -62,7 +73,9 @@ def ChangeTo_Quit():
     turtle.bye()
 
 # Display the 3 buttons
-Screenuifunctions.Play_Button(ChangeTo_GamePlay,ChangeTo_Scoreboard,ChangeTo_Quit)
+Screenuifunctions.Play_Button(ChangeTo_GamePlay,
+                              ChangeTo_Scoreboard,
+                              ChangeTo_Quit)
 
 # MUST ALWAYS BE AT THE LAST OF THE CODE !! CODE MUST NOT GO BEYOND THIS LINE!! ============================================
 # To allow screen to stay and not close
