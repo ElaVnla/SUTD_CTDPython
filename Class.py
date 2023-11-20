@@ -140,6 +140,7 @@ class Missile(Sprite):
                 self.active = False
         
     def fire(self):
+        print("FIRE")
         if not self.active:
             self.active = True
             self.x = 0

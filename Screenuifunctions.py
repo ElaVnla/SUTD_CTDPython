@@ -18,8 +18,6 @@ WIDTH, HEIGHT = 900, 500
 USER_INPUT=[]
 userInput=""
 
-def justATestLMAO():
-    print(userInput)
 
 # SCREEN LAYOUT ================================================================================================================
 
@@ -174,9 +172,9 @@ def Gameplay_Screen():
     
     screen._onkeypress = partial(_onkeypress, screen)
     screen.onkeypress(letter)
-    screen.onkeypress(missile.fire, "space")
-    screen.onkeypress(return_user_input, "space")
-    screen.onkeypress(justATestLMAO, "w")
+    # screen.onkeypress(missile.fire, "space")
+    
+    # screen.onkeypress(justATestLMAO, "w")
     
     
     
@@ -184,7 +182,7 @@ def Gameplay_Screen():
     while True:
     # Update the screen
         update()  
-        bruh=randint(0,1000)
+        # bruh=randint(0,1000)
         sp_pen.clear()
         sp_pen.hideturtle()
         sp_pen.penup()
@@ -207,9 +205,10 @@ def Gameplay_Screen():
             sprite.update()
             sprite.render(sp_pen)
         # for sprite in sprites:
-            
+        screen.onkeypress(partial(return_user_input, missile, asteroids), "space")
         # delay=input("blah blah")
         # pass
+        
 
 
 def spawnSomeMotherFuckers(difficultyTweak,words,sprites):
@@ -259,11 +258,20 @@ def letter(character):
         # print(USER_INPUT)
 
 
-
-def return_user_input():
+def return_user_input(missile, asteroids):
     res=''
     userInput=res.join(USER_INPUT)
     USER_INPUT.clear()
     turtle.clear()
     turtle.goto(WIDTH/2-300,-HEIGHT/2+50)
+    # print(userInput)
+
+    for a in asteroids:
+        # print(a.word, asteroids.index(a))
+        if (a.word==userInput):
+            missile.fire()
+            asteroids.remove(asteroids[asteroids.index(a)])
+        #    asteroids.remove(asteroids.index(userInput))
+        
+    # return userInput
 
