@@ -176,7 +176,8 @@ def Gameplay_Screen():
     missile=Class.Missile()
 
     # experimental difficulty 
-    difficulty=2
+    difficulty = 1
+
     
     # add player, ship, and missile into list of sprites to animate
     sprites.append(player)
@@ -189,7 +190,10 @@ def Gameplay_Screen():
     turtle.penup()
     turtle.goto(WIDTH/2-300,-HEIGHT/2+50)
     turtle.hideturtle()
-    
+
+    score_pen = turtle.Turtle()
+    score_pen.color("white")
+    score_pen.goto(WIDTH/2-300,HEIGHT/2-50)
     # turtle screen listen for user input on keyboard
     # this specifically will print out the letters typed by the player live on the screen
     screen.listen()
@@ -229,10 +233,17 @@ def Gameplay_Screen():
             sprite.render(sp_pen)
 
         # get user input via series of functions, when player presses "space", if word exists, asteroid is destroyed
-        screen.onkeypress(partial(return_user_input, missile, asteroids), "space")
+        screen.onkeypress(partial(return_user_input, missile, asteroids, player), "space")
         # delay=input("blah blah")
         # pass
+        score_pen.clear()
+        score_pen.write(player.score,False, font=FONT)
         
+        # difficulty increases when the points increases
+        for i in range (1,20):
+            if  player.score == i*100:
+                difficulty = i + 1
+                print(difficulty)
 
 # function for spawning asteroids to be put into while loop
 def spawnSomeMotherFuckers(difficultyTweak,words,sprites): # args influence number of asteroids to spawn, what words to use, and the list of asteroid objects
@@ -301,7 +312,7 @@ def letter(character):
         # print(USER_INPUT)
 
 
-def return_user_input(missile, asteroids):
+def return_user_input(missile, asteroids, player):
     res=''
     userInput=res.join(USER_INPUT)
     USER_INPUT.clear()
@@ -314,6 +325,7 @@ def return_user_input(missile, asteroids):
         if (a.word==userInput):
             missile.fire(a)
             asteroids.remove(asteroids[asteroids.index(a)])
+            player.score += 10
         #    asteroids.remove(asteroids.index(userInput))
         
     # return userInput
