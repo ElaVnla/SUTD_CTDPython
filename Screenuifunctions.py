@@ -13,7 +13,9 @@ from tkinter import font
 # TEXT Designs
 CURSOR_SIZE = 20
 FONT_SIZE = 32
-FONT = ('Arial', FONT_SIZE, 'bold')
+FONT = ('Arial', 
+        FONT_SIZE, 
+        'bold')
 screen = turtle.Screen()
 WIDTH, HEIGHT = 900, 500
 USER_INPUT=[]
@@ -27,7 +29,8 @@ def justATestLMAO():
 # SCREEN SETUP Screenuifunctions
 # First thing to be called when main.py is run. This function will help setup the overall application
 def Screen_Setup():
-    screen.setup(WIDTH + 4, HEIGHT + 8)  # fudge factors due to window borders & title bar
+    screen.setup(WIDTH + 4, 
+                 HEIGHT + 8)  # fudge factors due to window borders & title bar
     # screen.setworldcoordinates(0, 0, WIDTH, HEIGHT)
     #setup(900,500)
     # Title of the application. This will be displayed at the top left of the interface
