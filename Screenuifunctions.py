@@ -200,7 +200,7 @@ def Gameplay_Screen():
 
         for sprite in asteroids:
             sp_pen.goto(sprite.x, sprite.y)
-            sp_pen.color("purple")
+            sp_pen.color("white")
             sp_pen.write(f"{sprite.word}", False, font=("Courier New", 18, "normal"))
             sprite.update()
             sprite.render(sp_pen)
@@ -253,6 +253,7 @@ def _onkeypress(self, fun, key=None):
 
 def letter(character):
     if (character.isalpha()):
+        turtle.color('white')
         turtle.write(character, move=True, font=FONT)
         USER_INPUT.append(character)
         # print(USER_INPUT)
