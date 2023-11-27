@@ -227,6 +227,9 @@ def Gameplay_Screen():
             sp_pen.write(f"{sprite.word}", False, font=("Courier New", 18, "normal"))
             sprite.update()
             sprite.render(sp_pen)
+                        #if out of bounds, missile will despawn
+            if sprite.y < -(HEIGHT/2):
+                asteroids.remove(sprite)
 
         # get user input via series of functions, when player presses "space", if word exists, asteroid is destroyed
         screen.onkeypress(partial(return_user_input, missile, asteroids), "space")
@@ -245,7 +248,8 @@ def spawnSomeMotherFuckers(difficultyTweak,words,sprites): # args influence numb
 
             # randomly spawn asteroid slightly above the top of the screen
             x = randint(1,3)*82.5*choice([-1,1])
-            y = HEIGHT/2+randint(1,4)*20
+            for k in range (1,5):
+                y = HEIGHT/2+k*20
             
             # if there are already asteroids in the list
             # if(len(sprites)!=0):
