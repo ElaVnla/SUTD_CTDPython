@@ -23,6 +23,7 @@ USER_INPUT=[]
 userInput=""
 
 
+
 # SCREEN LAYOUT ================================================================================================================
 
 # SCREEN SETUP Screenuifunctions
@@ -134,8 +135,9 @@ def Back_Button(GoBack):
 
 
 # Design for Game Over Screen ====================================================================================================
-def Gameover_Screen():
+def Gameover_Screen(score):
     # Import the background image, to be displayed
+
     image = "Images/gameover.gif"
     screen = turtle.Screen()
     #screen.addshape(image)
@@ -143,13 +145,19 @@ def Gameover_Screen():
     screen.register_shape(image)
     turtle.shape(image)
 
+    player_name=screen.textinput("Enter your name", "SCORE: " + str(score))
+    # print(player_name)
+    PLAYER_SCORE_DICT={"PlayerName":player_name,"Score": score}
+    return PLAYER_SCORE_DICT, screen
+    
+
 #  Design for Game Screen =======================================================================================================
 def GetWords():
     word_site = "https://www.mit.edu/~ecprice/wordlist.10000"
 
     response = requests.get(word_site)
     WORDS = response.content.splitlines()
-    print(WORDS)
+    # print(WORDS)
     newlist = []
     for words in WORDS:
         if len(words) <= 6 and len(words) >= 4:
@@ -158,6 +166,8 @@ def GetWords():
     
     return newlist
 def Gameplay_Screen():
+
+    gameoveractivate = False
     
     image = "Images/gamescreen.gif"
     
@@ -182,7 +192,7 @@ def Gameplay_Screen():
     missile=Class.Missile()
 
     # experimental difficulty 
-    difficulty = 1
+    difficulty = 3
 
     
     # add player, ship, and missile into list of sprites to animate
@@ -207,7 +217,7 @@ def Gameplay_Screen():
     screen.onkeypress(letter)
     
     # main game while loop, enables animation update and render to run continuously
-    while True:
+    while gameoveractivate==False:
     # Update the screen
         update()  
 
@@ -218,15 +228,24 @@ def Gameplay_Screen():
         # turtle won't draw continuous lines
         sp_pen.penup()
 
+        for i in range(player.lives):
+            sp_pen.goto(-WIDTH/2 +20 + 30 * i, HEIGHT/2-50)
+            sp_pen.shape("triangle")
+            sp_pen.color("red")
+            sp_pen.shapesize(0.9, 0.9, 0)
+            sp_pen.setheading(90)
+            sp_pen.stamp()
+
+
         # if there are less than certain number of asteroids, continue spawning for player to play
         if(len(asteroids)<difficulty):
-            spawnSomeMotherFuckers(2,words,asteroids)
+            asteroidSpawn(difficulty,words,asteroids)
         
         
 
         # render and update
         for sprite in sprites:
-            sprite.update()
+            sprite.update() 
             sprite.render(sp_pen)
                            
         # attach a word from the list of words to appear below the asteroid    
@@ -237,9 +256,19 @@ def Gameplay_Screen():
             sp_pen.write(f"{sprite.word}", False, font=("Courier New", 18, "normal"))
             sprite.update()
             sprite.render(sp_pen)
+            if sprite.y < -(HEIGHT/2):
+                asteroids.remove(sprite)
+                player.lives-=1
+                print(f"Lives: {player.lives}")
+                if player.lives <= 0:
+                    print("PLAYER DIES")
+                    player.active = False
+                    gameoveractivate = True
+                    break
 
         # get user input via series of functions, when player presses "space", if word exists, asteroid is destroyed
         screen.onkeypress(partial(return_user_input, missile, asteroids, player), "space")
+        # screen.onkeypress(partial(return_user_input, missile, asteroids, player), "return")
         # delay=input("blah blah")
         # pass
         score_pen.clear()
@@ -249,21 +278,33 @@ def Gameplay_Screen():
         for i in range (1,20):
             if  player.score == i*100:
                 difficulty = i + 1
-                print(difficulty)
+                # print(difficulty)
+    
+    return gameoveractivate, screen, player.score
 
 # function for spawning asteroids to be put into while loop
-def spawnSomeMotherFuckers(difficultyTweak,words,sprites): # args influence number of asteroids to spawn, what words to use, and the list of asteroid objects
+def asteroidSpawn(difficultyTweak,words,sprites): # args influence number of asteroids to spawn, what words to use, and the list of asteroid objects
     for _ in range(difficultyTweak):
             # create asteroid instance
+            k=_
+            # print(k)
+            if(k>2):
+                k=0
             asteroid = Class.Asteroid()
             
             # choose a random word to be attached to asteroid instance
             word=words[randint(0,len(words)-1)]
 
-            # randomly spawn asteroid slightly above the top of the screen
-            x = randint(1,3)*82.5*choice([-1,1])
-            y = HEIGHT/2+randint(1,4)*20
-            
+            # randomly spawn asteroid slightly above the top of the screen 
+            x = (k+1)*122.5*choice([-1,1])
+            y = HEIGHT/2+(k+1)*70
+            # print(x,y)
+
+            if (len(sprites)>0):
+                for a in sprites:
+                    if asteroid.is_collision(a):
+                        asteroid.active=False
+                        print("collide!")
             # if there are already asteroids in the list
             # if(len(sprites)!=0):
             #     for k in sprites:
@@ -283,7 +324,7 @@ def spawnSomeMotherFuckers(difficultyTweak,words,sprites): # args influence numb
 
             # asteroid movement variable, can be adjusted according to the difficulty level
             dx = 0
-            dy = randint(-difficultyTweak, -1) / 25.0            
+            dy = randint(-difficultyTweak, -1) / 20.0            
             asteroid.dx = dx
             asteroid.dy = dy
 
