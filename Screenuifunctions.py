@@ -146,7 +146,7 @@ def Gameover_Screen(score):
     turtle.shape(image)
 
     player_name=screen.textinput("Enter your name", "SCORE: " + str(score))
-    # print(player_name)
+    print("You LOSE")
     PLAYER_SCORE_DICT={"PlayerName":player_name,"Score": score}
     return PLAYER_SCORE_DICT, screen
     
