@@ -10,6 +10,17 @@ screen = turtle.Screen()
 screen.setup(width=1.0, 
              height=1.0)
 
+score=0
+# Pass in the Score list and display the results in order
+# Display the top 6 results
+Players_Score_Dict = [{'PlayerName': 'Erika', 'Score':20}, 
+                        {'PlayerName':'Joey','Score': 30}, 
+                        {'PlayerName':'Ryan','Score': 100}, 
+                        {'PlayerName':'Erika','Score': 0}, 
+                        {'PlayerName': 'Angie', 'Score': 50}, 
+                        {'PlayerName': "Jered", 'Score': 60}, 
+                        {'PlayerName': "Drea", 'Score': 80}]
+
 # Run screen setup
 Screenuifunctions.Screen_Setup()
 
@@ -24,7 +35,16 @@ def ChangeTo_GamePlay():
     # Clear everything on the screen to display a new screen
     Homescreen.clear()
     print("play button")
-    Screenuifunctions.Gameplay_Screen()
+    newhomescreen, newscreen, score = Screenuifunctions.Gameplay_Screen()
+
+    if newhomescreen:
+        newscreen.clear()
+        playerdict, anothernewscreen = Screenuifunctions.Gameover_Screen(score)
+        Players_Score_Dict.append(playerdict)
+        anothernewscreen.clear()
+        ChangeTo_Scoreboard()
+
+
     
 
 # If player clicks scoreboard, will navigate to this function
@@ -32,19 +52,10 @@ def ChangeTo_Scoreboard():
     Homescreen.clear()
     print("Scoreboard button")
     NewHomescreen = Screenuifunctions.Scoreboard_Screen()
-
-    # Pass in the Score list and display the results in order
-    # Display the top 6 results
-    Players_Score_Dict = [{'PlayerName': 'Erika', 'Score':20}, 
-                          {'PlayerName':'Joey','Score': 30}, 
-                          {'PlayerName':'Ryan','Score': 100}, 
-                          {'PlayerName':'Erika','Score': 0}, 
-                          {'PlayerName': 'Angie', 'Score': 50}, 
-                          {'PlayerName': "Jered", 'Score': 60}, 
-                          {'PlayerName': "Drea", 'Score': 80}]
     Sorted_Dict = sorted(Players_Score_Dict, 
-                         key=lambda d: d['Score'], 
-                         reverse=True) 
+                            key=lambda d: d['Score'], 
+                            reverse=True) 
+
     # Print results in terminal to check if sorted_dict was sorted right
     print(Sorted_Dict)
 
