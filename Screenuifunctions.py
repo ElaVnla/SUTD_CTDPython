@@ -22,8 +22,6 @@ WIDTH, HEIGHT = 900, 500
 USER_INPUT=[]
 userInput=""
 
-
-
 # SCREEN LAYOUT ================================================================================================================
 
 # SCREEN SETUP Screenuifunctions
@@ -60,16 +58,19 @@ def Play_Button(ChangeTo_GamePlay,ChangeTo_Scoreboard,ChangeTo_Quit):
     # Creation of buttons and linking it to their respective functions (command=(function name) )
     myfont = font.Font(family='Arial', size=11, weight="normal")
 
+    # Button for Gameplay
     GamePlayButton = tk.Button(parent, text="Let's Play", fg='black', bg='light gray', command=ChangeTo_GamePlay, font=myfont)
     id1 = canvas.create_window((0,80), window=GamePlayButton)
     canvas.itemconfig(id1, width=180, height=40)
     GamePlayButton.update()
 
+    # Button for Scoreboard
     ScoreboardButton = tk.Button(parent, text='Scoreboard', fg='black', bg='light gray', command=ChangeTo_Scoreboard, font=myfont)
     id2 = canvas.create_window((0,140), window=ScoreboardButton)
     canvas.itemconfig(id2, width=180, height=40)
     ScoreboardButton.update()
 
+    # Button for Quit
     QuitButton = tk.Button(parent, text='Leave', fg='black', bg='light gray', command=ChangeTo_Quit, font=myfont)
     id3 = canvas.create_window((0,200), window=QuitButton)
     canvas.itemconfig(id3, width=180, height=40)
@@ -119,7 +120,6 @@ def Display_Score(Sorted_Dict):
             stopat6 += 1
             position_yaxis -= 40
 
-
 # Function that creates the buttons in the homescreen
 def Back_Button(GoBack):
     canvas = turtle.getcanvas()
@@ -137,7 +137,6 @@ def Back_Button(GoBack):
 # Design for Game Over Screen ====================================================================================================
 def Gameover_Screen(score):
     # Import the background image, to be displayed
-
     image = "Images/gameover.gif"
     screen = turtle.Screen()
     #screen.addshape(image)
@@ -145,30 +144,38 @@ def Gameover_Screen(score):
     screen.register_shape(image)
     turtle.shape(image)
 
+    # Ask player to input their playername to be stored and display on the scoreboard
     player_name=screen.textinput("Enter your name", "SCORE: " + str(score))
     # print(player_name)
     PLAYER_SCORE_DICT={"PlayerName":player_name,"Score": score}
+
+    # Return the player's dictionary and the current active screen
     return PLAYER_SCORE_DICT, screen
-    
 
 #  Design for Game Screen =======================================================================================================
 def GetWords():
+    # Instead of making a List full of words, to save time we use a wordlist that comprises of 10000 words for us to choose from
     word_site = "https://www.mit.edu/~ecprice/wordlist.10000"
 
     response = requests.get(word_site)
     WORDS = response.content.splitlines()
     # print(WORDS)
+
+    # We only want specific words that has specific number of characters. This is needed to not overwhelmed the screen with too long words
+    # and for display purpose
     newlist = []
     for words in WORDS:
         if len(words) <= 6 and len(words) >= 4:
+            # Words are given in utf-8 format, thus we need to decode it to get it to a string
             bruh = words.decode("utf-8")
             newlist.append(bruh)
     
     return newlist
 def Gameplay_Screen():
-
+    # Variables
     gameoveractivate = False
     
+    #Background image to be displayed
     image = "Images/gamescreen.gif"
     
     #screen.addshape(image)
@@ -193,7 +200,6 @@ def Gameplay_Screen():
 
     # experimental difficulty 
     difficulty = 3
-
     
     # add player, ship, and missile into list of sprites to animate
     sprites.append(player)
@@ -236,13 +242,10 @@ def Gameplay_Screen():
             sp_pen.setheading(90)
             sp_pen.stamp()
 
-
         # if there are less than certain number of asteroids, continue spawning for player to play
         if(len(asteroids)<difficulty):
             asteroidSpawn(difficulty,words,asteroids)
         
-        
-
         # render and update
         for sprite in sprites:
             sprite.update() 
@@ -321,21 +324,18 @@ def asteroidSpawn(difficultyTweak,words,sprites): # args influence number of ast
             # else:
             asteroid.goto(x, y)
             
-
             # asteroid movement variable, can be adjusted according to the difficulty level
             dx = 0
             dy = randint(-difficultyTweak, -1) / 20.0            
             asteroid.dx = dx
             asteroid.dy = dy
-
-            
+        
             size = randint(2,4)
             asteroid.size = size
             asteroid.word=word
             
             sprites.append(asteroid)
     
-
 def _onkeypress(self, fun, key=None):
     if fun is None:
         if key is None:
@@ -357,7 +357,6 @@ def letter(character):
         turtle.write(character, move=True, font=FONT)
         USER_INPUT.append(character)
         # print(USER_INPUT)
-
 
 def return_user_input(missile, asteroids, player):
     res=''

@@ -1,3 +1,4 @@
+# Import Libraries
 import turtle
 import math
 import random
@@ -29,7 +30,6 @@ class Sprite:
             self.x += self.dx
             self.y += self.dy
 
-        
     def render(self, pen):
         #Sprite superclass render sprite
         if self.active:
@@ -55,7 +55,6 @@ class Sprite:
         self.x = x
         self.y = y
 
-
 #Player subclass of Sprite
 class Player(Sprite):
     def __init__(self):
@@ -69,8 +68,7 @@ class Player(Sprite):
         self.size=2
         self.shape = "triangle"
         self.color = "yellow"
-
-            
+      
     def render(self, pen):
         #Player render 
         if self.active:
@@ -92,7 +90,6 @@ class Ship(Sprite):
         self.shape = "square"
         self.color = "gray"
 
-
 #Asteroid subclass of Sprite
 class Asteroid(Sprite):
     def __init__(self):
@@ -101,7 +98,6 @@ class Asteroid(Sprite):
         self.shape = "circle"
         self.color= "gray"
         self.word=""
-
 
 #Missile subclass of Sprite
 class Missile(Sprite):
@@ -113,7 +109,6 @@ class Missile(Sprite):
         self.size = 0.5
         self.active = False
         
-
     def update(self):
         #Missile animation update
         if self.active:

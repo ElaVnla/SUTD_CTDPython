@@ -35,17 +35,21 @@ def ChangeTo_GamePlay():
     # Clear everything on the screen to display a new screen
     Homescreen.clear()
     print("play button")
+    # Call Gameplay Screen. 
+    # newhomescreen ==> Checks whether gameover has been activated. If True, screen is cleared and game over screen appears
+    # newscreen ==> return current activated screen that will be needed to clear when gameover screen is activated
+    # score ==> Return current player's score that will be added to the dict
     newhomescreen, newscreen, score = Screenuifunctions.Gameplay_Screen()
 
+    # Only when Game over is true, game over screen will be displayed
     if newhomescreen:
         newscreen.clear()
         playerdict, anothernewscreen = Screenuifunctions.Gameover_Screen(score)
         Players_Score_Dict.append(playerdict)
         anothernewscreen.clear()
+        
+        # Navigate back to Scoreboard to display player's ranking
         ChangeTo_Scoreboard()
-
-
-    
 
 # If player clicks scoreboard, will navigate to this function
 def ChangeTo_Scoreboard():
@@ -92,6 +96,3 @@ Screenuifunctions.Play_Button(ChangeTo_GamePlay,
 # To allow screen to stay and not close
 turtle.mainloop() # This will run the above results
 turtle.done() #Program will end when user clicks on the exit button on top right
-
-###
-## Why is the commit not commiting
