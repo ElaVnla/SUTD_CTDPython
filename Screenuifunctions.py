@@ -215,7 +215,7 @@ def Gameplay_Screen():
 
     score_pen = turtle.Turtle()
     score_pen.color("white")
-    score_pen.goto(WIDTH/2-300,HEIGHT/2-50)
+    score_pen.goto(WIDTH/2-200,HEIGHT/2-50)
     # turtle screen listen for user input on keyboard
     # this specifically will print out the letters typed by the player live on the screen
     screen.listen()
@@ -243,7 +243,7 @@ def Gameplay_Screen():
             sp_pen.stamp()
 
         # if there are less than certain number of asteroids, continue spawning for player to play
-        if(len(asteroids)<difficulty):
+        while(len(asteroids)<difficulty):
             asteroidSpawn(difficulty,words,asteroids)
         
         # render and update
@@ -280,7 +280,7 @@ def Gameplay_Screen():
         # difficulty increases when the points increases
         for i in range (1,20):
             if  player.score == i*100:
-                difficulty = i + 1
+                difficulty = i + 3
                 # print(difficulty)
     
     return gameoveractivate, screen, player.score
@@ -303,11 +303,7 @@ def asteroidSpawn(difficultyTweak,words,sprites): # args influence number of ast
             y = HEIGHT/2+(k+1)*70
             # print(x,y)
 
-            if (len(sprites)>0):
-                for a in sprites:
-                    if asteroid.is_collision(a):
-                        asteroid.active=False
-                        print("collide!")
+            
             # if there are already asteroids in the list
             # if(len(sprites)!=0):
             #     for k in sprites:
@@ -323,10 +319,14 @@ def asteroidSpawn(difficultyTweak,words,sprites): # args influence number of ast
             # # spawn the asteroid
             # else:
             asteroid.goto(x, y)
-            
+            if (len(sprites)>0):
+                for a in sprites:
+                    if asteroid.is_collision(a):
+                        sprites.remove(a)
+                        print("collide!")
             # asteroid movement variable, can be adjusted according to the difficulty level
             dx = 0
-            dy = randint(-difficultyTweak, -1) / 20.0            
+            dy = randint(-difficultyTweak, -difficultyTweak+2) / 25.0            
             asteroid.dx = dx
             asteroid.dy = dy
         
@@ -353,6 +353,7 @@ def _onkeypress(self, fun, key=None):
 
 def letter(character):
     if (character.isalpha()):
+        character=character.lower()
         turtle.color('white')
         turtle.write(character, move=True, font=FONT)
         USER_INPUT.append(character)
